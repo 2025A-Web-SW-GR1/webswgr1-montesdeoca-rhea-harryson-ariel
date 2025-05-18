@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monkeytype | Prueba de mecanografía</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #323437;
+            --main-color: #e2b714;
+            --caret-color: #e2b714;
+            --sub-color: #646669;
+            --sub-alt-color: #2c2e31;
+            --text-color: #d1d0c5;
+            --error-color: #ca4754;
+            --error-extra-color: #7e2a33;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .logo {
+            color: var(--main-color);
+            font-weight: bold;
+        }
+        
+        .test-container {
+            background-color: var(--sub-alt-color);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .word {
+            color: var(--sub-color);
+        }
+        
+        .word.active {
+            color: var(--text-color);
+        }
+        
+        .word.correct {
+            color: var(--main-color);
+        }
+        
+        .word.incorrect {
+            color: var(--error-color);
+        }
+        
+        .caret {
+            border-left: 2px solid var(--caret-color);
+        }
+        
+        .btn-primary {
+            background-color: var(--main-color);
+            border-color: var(--main-color);
+            color: #323437;
+        }
+        
+        .btn-outline-primary {
+            border-color: var(--main-color);
+            color: var(--main-color);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--main-color);
+            color: #323437;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand logo" href="#">
+                <i class="fas fa-keyboard me-2"></i>Monkeytype
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="tooltip" title="Clasificación">
+                            <i class="fas fa-crown"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="tooltip" title="Acerca de">
+                            <i class="fas fa-info-circle"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="tooltip" title="Configuración">
+                            <i class="fas fa-cog"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="tooltip" title="Iniciar sesión">
+                            <i class="far fa-user"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="d-flex flex-wrap justify-content-center mb-4">
+                    <div class="btn-group me-2 mb-2" role="group">
+                        <button type="button" class="btn btn-outline-primary">
+                            <i class="fas fa-clock"></i> Tiempo
+                        </button>
+                        <button type="button" class="btn btn-outline-primary">
+                            <i class="fas fa-font"></i> Palabras
+                        </button>
+                        <button type="button" class="btn btn-outline-primary">
+                            <i class="fas fa-quote-left"></i> Citas
+                        </button>
+                        <button type="button" class="btn btn-outline-primary">
+                            <i class="fas fa-spa"></i> Zen
+                        </button>
+                        <button type="button" class="btn btn-outline-primary">
+                            <i class="fas fa-at"></i> Puntuación
+                        </button>
+                        <button type="button" class="btn btn-outline-primary">
+                            <i class="fas fa-hashtag"></i> Números
+                        </button>
+                        <button type="button" class="btn btn-outline-primary">
+                            <i class="fas fa-sliders-h"></i> Custom
+                        </button>
+                        <button type="button" class="btn btn-outline-primary">15</button>
+                        <button type="button" class="btn btn-outline-primary active">30</button>
+                        <button type="button" class="btn btn-outline-primary">60</button>
+                        <button type="button" class="btn btn-outline-primary">120</button>
+                    </div>
+                </div>
+                
+                <div class="test-container position-relative">
+                    <div id="timer" class="text-end mb-3">00:30</div>
+                    
+                    <div id="wordsWrapper" class="mb-4 position-relative">
+                        <div id="words" class="fs-4 lh-lg">
+                            <span class="word active">App</span>
+                            <span class="word">Web</span>
+                            <span class="word">6to</span>
+                            <span class="word">Semestre</span>
+                            <span class="word">Ing</span>
+                            <span class="word">Software</span>
+                            <span class="word">EPN</span>
+                            <span class="word">2025</span>
+                            <span class="word">A</span>
+                        </div>
+                        <div id="caret" class="caret position-absolute"></div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="me-3">WPM: <strong>0</strong></span>
+                            <span class="me-3">Precisión: <strong>0%</strong></span>
+                            <span>Caracteres: <strong>0/0/0/0</strong></span>
+                        </div>
+                        <button id="restartButton" class="btn btn-primary">
+                            <i class="fas fa-redo-alt"></i> Reiniciar
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="results" class="mt-4 p-4 bg-dark rounded d-none">
+                    <h4 class="text-center mb-4">Resultados</h4>
+                    <div class="row text-center">
+                        <div class="col-md-3 mb-3">
+                            <div class="fs-1">65</div>
+                            <div class="text-muted">WPM</div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="fs-1">98%</div>
+                            <div class="text-muted">Precisión</div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="fs-1">72</div>
+                            <div class="text-muted">Raw</div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="fs-1">95%</div>
+                            <div class="text-muted">Consistencia</div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <button class="btn btn-outline-primary me-2">
+                            <i class="fas fa-chart-line"></i> Ver gráfico
+                        </button>
+                        <button class="btn btn-outline-primary">
+                            <i class="fas fa-share-alt"></i> Compartir
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+</body>
+</html>

@@ -18,16 +18,25 @@ export class CasaController {
   obtenerCasas(@Query('idCasa') idCasa?: string) {
     // Si no se proporciona idCasa, devolverá todas las casas
     if (!idCasa) {
-      return this.casas;
+      return {
+        statusCode: 200,
+        data: this.casas,
+      };
     }
 
     const id = parseInt(idCasa, 10);
     const casa = this.casas.find((c) => c.id === id);
 
     if (!casa) {
-      throw new NotFoundException('No se encuentra');
+      throw new NotFoundException({
+        statusCode: 404,
+        message: 'No se encuentra',
+      });
     }
 
-    return [casa];
+    return {
+      statusCode: 200,
+      data: casa,
+    };
   }
 }

@@ -5,7 +5,10 @@ import { DatabaseModule } from './database/database.module';
 import { CasaModule } from './casa/casa.module';
 
 @Module({
-  imports: [DatabaseModule, CasaModule],
+  imports: [
+    DatabaseModule,
+    CasaModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

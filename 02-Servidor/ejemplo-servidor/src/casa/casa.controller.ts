@@ -7,20 +7,20 @@ import {
     Post,
     Put,
     Query,
+    Render,
     Res,
     UploadedFile,
-    UseInterceptors,
-    Response,
+    UseInterceptors
 } from '@nestjs/common';
-import { CasaService } from './casa.service';
-import { FindManyOptions, Like } from 'typeorm';
-import { BuscarDto } from './dto/buscar.dto';
-import { Casa } from './casa.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CasaEditarDto } from './dto/casa-editar.dto';
-import { CrearEditarBaseDto } from './dto/crear-editar.base.dto';
 import { createReadStream } from 'fs';
 import { join } from 'path';
+import { FindManyOptions, Like } from 'typeorm';
+import { Casa } from './casa.entity';
+import { CasaService } from './casa.service';
+import { BuscarDto } from './dto/buscar.dto';
+import { CasaEditarDto } from './dto/casa-editar.dto';
+import { CrearEditarBaseDto } from './dto/crear-editar.base.dto';
 
 @Controller('api/casa')
 export class CasaController {
@@ -29,6 +29,20 @@ export class CasaController {
     ) {
 
     }
+
+    // Endpoint para mostrar tabla HTML - Renderizado del servidor
+    @Get('tabla-simple')
+    @Render('casa-tabla-simple')
+    async mostrarTablaSimple() {
+        const casas = await this.casaService.obtenerTodos();
+        return {
+            casas: casas,
+            titulo: 'Lista de Casas - Sistema Inmobiliario',
+            totalCasas: casas.length,
+            fechaGeneracion: new Date().toLocaleString('es-ES')
+        };
+    }
+
     @Get()
     obtener(
         @Query() parametrosConsulta: BuscarDto,

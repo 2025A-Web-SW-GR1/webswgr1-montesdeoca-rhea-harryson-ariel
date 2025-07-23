@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titulo %></title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .info-panel {
+            background-color: #e8f4fd;
+            border: 1px solid #3498db;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-box {
+            background-color: #34495e;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            margin: 5px;
+            min-width: 120px;
+        }
+
+        .stat-number {
+            font-size: 1.8em;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+        }
+
+        th {
+            background-color: #2c3e50;
+            color: white;
+            padding: 12px 8px;
+            text-align: left;
+            border: 1px solid #34495e;
+            font-weight: bold;
+        }
+
+        td {
+            padding: 10px 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #e3f2fd;
+        }
+
+        .precio {
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        .sin-datos {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        .imagen {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .usuario {
+            background-color: #3498db;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.85em;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                margin: 10px;
+            }
+            
+            .stats {
+                flex-direction: column;
+            }
+            
+            table {
+                font-size: 0.9em;
+            }
+            
+            th, td {
+                padding: 8px 5px;
+            }
+            
+            .imagen {
+                width: 50px;
+                height: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><%= titulo %></h1>
+
+        <% if (casas && casas.length > 0) { %>
+            <div class="stats">
+                <div class="stat-box">
+                    <span class="stat-number"><%= totalCasas %></span>
+                    <span class="stat-label">Total de Casas</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">
+                        <%= casas.filter(casa => casa.valor > 0).length %>
+                    </span>
+                    <span class="stat-label">Con Precio</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">
+                        <%= casas.filter(casa => casa.imagenURL || casa.fileID).length %>
+                    </span>
+                    <span class="stat-label">Con Imagen</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">
+                        <%= casas.filter(casa => casa.username).length %>
+                    </span>
+                    <span class="stat-label">Con Usuario</span>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Valor</th>
+                        <th>Imagen</th>
+                        <th>Usuario</th>
+                        <th>Archivo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% casas.forEach(function(casa) { %>
+                        <tr>
+                            <td><strong>#<%= casa.id || 'N/A' %></strong></td>
+                            <td><%= casa.nombre || 'Sin nombre' %></td>
+                            <td>
+                                <% if (casa.valor && casa.valor > 0) { %>
+                                    <span class="precio">$<%= new Intl.NumberFormat('es-ES').format(casa.valor) %></span>
+                                <% } else { %>
+                                    <span class="sin-datos">Sin precio</span>
+                                <% } %>
+                            </td>
+                            <td>
+                                <% if (casa.imagenURL) { %>
+                                    <img src="<%= casa.imagenURL %>" alt="Casa <%= casa.nombre %>" class="imagen">
+                                <% } else if (casa.fileID) { %>
+                                    <img src="data:<%= casa.fileContentType %>;base64,<%= casa.fileID %>" 
+                                         alt="Casa <%= casa.nombre %>" class="imagen">
+                                <% } else { %>
+                                    <span class="sin-datos">Sin imagen</span>
+                                <% } %>
+                            </td>
+                            <td>
+                                <% if (casa.username) { %>
+                                    <span class="usuario"><%= casa.username %></span>
+                                <% } else { %>
+                                    <span class="sin-datos">Sin usuario</span>
+                                <% } %>
+                            </td>
+                            <td>
+                                <% if (casa.filename) { %>
+                                    <strong><%= casa.filename %></strong>
+                                    <% if (casa.fileContentType) { %>
+                                        <br><small>(<%= casa.fileContentType %>)</small>
+                                    <% } %>
+                                <% } else { %>
+                                    <span class="sin-datos">Sin archivo</span>
+                                <% } %>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <div class="no-data">
+                <h3>📭 No hay casas registradas</h3>
+                <p>Actualmente no existen casas en la base de datos.</p>
+                <p>Los datos aparecerán automáticamente cuando se agreguen nuevas propiedades al sistema.</p>
+            </div>
+        <% } %>
+
+    </div>
+</body>
+</html>

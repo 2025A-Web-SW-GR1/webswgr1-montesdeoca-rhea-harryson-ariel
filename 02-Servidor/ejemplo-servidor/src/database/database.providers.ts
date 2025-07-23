@@ -1,4 +1,4 @@
-import { DataSource } from 'typeorm';
+import { DataSource } from "typeorm";
 
 export const databaseProviders = [
   {
@@ -8,7 +8,9 @@ export const databaseProviders = [
         type: 'sqlite',
         database: 'database.sqlite',
         // Name of your SQLite database file
-        entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+        entities: [
+          __dirname + '/../**/*.entity{.ts,.js}',
+        ],
         synchronize: true,
       });
 
